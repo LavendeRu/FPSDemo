@@ -17,16 +17,22 @@ public class CameraLock : MonoBehaviour
 
     private float xRotation = 0f;
     private float yRotation = 0f;
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
     private void Update()
     {
         this.mouseX = Input.GetAxis("Mouse X") * this.mouseSensitivity * Time.deltaTime;
         this.mouseY = Input.GetAxis("Mouse Y") * this.mouseSensitivity * Time.deltaTime;
-        xRotation += this.mouseX;
-        yRotation += this.mouseY;
+        xRotation -= this.mouseY;
+        xRotation = Mathf.Clamp(xRotation, -80f,80f);
 
-        Debug.LogError($"this.xRotation  = {this.xRotation },  this.yRotation = { this.yRotation}");
-        this.transform.localRotation = Quaternion.Euler(yRotation, this.mouseY,0f);
-        playerBody.Rotate(Vector3.up * xRotation);
+        yRotation += this.mouseY;
+        Debug.Log($"this.xRotation  = {this.xRotation },  this.yRotation = { this.yRotation}");
+        this.transform.localRotation = Quaternion.Euler(yRotation, 0f, 0f);
+        this.playerBody.Rotate(Vector3.up * this.mouseX);
     }
 
 }
